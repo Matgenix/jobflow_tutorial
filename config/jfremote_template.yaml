@@ -1,0 +1,84 @@
+name: ${PROJECTNAME}
+base_dir: /home/${NB_USER}/.jfremote/${PROJECTNAME}
+log_level: debug
+runner:
+  delay_checkout: 10
+  delay_check_run_status: 10
+  delay_advance_status: 10
+  delay_update_batch: 10
+  max_step_attempts: 3
+  delta_retry:
+  - 10
+  - 20
+  - 30
+
+workers:
+  local_slurm:
+    scheduler_type: slurm
+    work_dir: /home/${SLURM_USERNAME}/jobs
+    resources:
+    pre_run: "source /home/${SLURM_USERNAME}/.venv/bin/activate"
+    post_run:
+    timeout_execute: 60
+    type: remote
+    host: slurm
+    user: ${SLURM_USERNAME}
+    port:
+    password: ${SLURM_USERNAME}
+  local_shell:
+    scheduler_type: shell
+    work_dir: /home/${NB_USER}/jobs
+    pre_run: "export PYTHONPATH=/home/${NB_USER}/work/develop:$${missing_variable}PYTHONPATH"
+    type: local
+    max_jobs: 2
+
+queue:
+  store:
+    type: MongoStore
+    database: jobflow_remote
+    collection_name: jobs
+    host: mongodb
+    port: 
+    username: ''
+    password: ''
+    ssh_tunnel:
+    safe_update: false
+    auth_source: jobflow_remote
+    mongoclient_kwargs: {}
+    default_sort:
+
+exec_config: {}
+
+jobstore:
+  docs_store:
+    type: MongoStore
+    database: jobflow_remote
+    collection_name: outputs
+    host: mongodb
+    port: 
+    username: ''
+    password: ''
+    ssh_tunnel:
+    safe_update: false
+    auth_source: jobflow_remote
+    mongoclient_kwargs: {}
+    default_sort:
+  additional_stores:
+    data:
+      type: GridFSStore
+      database: jobflow_remote
+      collection_name: output_data
+      host: mongodb
+      port: 
+      username: ''
+      password: ''
+      compression: false
+      ensure_metadata: false
+      searchable_fields: []
+      auth_source: jobflow_remote
+      mongoclient_kwargs: {}
+      ssh_tunnel:
+      key: _id
+  save: {}
+  load: false
+metadata:
