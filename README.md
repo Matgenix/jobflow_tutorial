@@ -56,15 +56,15 @@ Once the containers are running, verify their status with:
 docker ps
 ```
 
-If everything is set up correctly, you should see the containers listed (e.g., `atomate2_school-jupyter-1`, 
-`atomate2_school-slurm-1`).
+If everything is set up correctly, you should see the containers listed (e.g., `jobflow_tutorial-jupyter-1`, 
+`jobflow_tutorial-slurm-1`, `jobflow_tutorial-mongodb-1`).
 
 
 ### Services
 
 #### JupyterLab
 
-Based on JupyterLab container, is the main entry point for the execution of workflows during the school. 
+Based on JupyterLab container, is the main entry point for the execution of workflows. 
 The base python environment includes `atomate2`, `jobflow`, `jobflow-remote` and all related 
 packages required to execute the workflows. 
 Jobflow-remote is already fully configured. 
@@ -74,7 +74,7 @@ Can also be accessed through a shell. Run
 ```bash
 docker container list
 ```
-to get the name of the container (similar to `atomate2_school-jupyter-1`) and launch a bash
+to get the name of the container (similar to `jobflow_tutorial-jupyter-1`) and launch a bash
 session inside the container with 
 ```bash
 docker exec -it <container-name> /bin/bash 
